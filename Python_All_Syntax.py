@@ -231,3 +231,4 @@ for x in range(10):
 
 
 print("\n")
+print("------------------ This is from Python_All_Syntax.py -----------")
