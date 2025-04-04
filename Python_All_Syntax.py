@@ -240,5 +240,10 @@ print(over_75)
 print("------------ End of Filter -------------\n")
 
 
+print("My name is", "Python.", end=" ")
+print("Monty Python.")
+
+print("My", "name", "is", "Monty", "Python.", sep="_")
+
 print("\n")
 print("------------------ This is from Python_All_Syntax.py -----------")
