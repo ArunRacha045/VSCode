@@ -1,8 +1,8 @@
-PK,Name_table1_df,Country_table1_df,Name_table2_df,Country_table2_df
-1,Mark,US,ravi,US
-2,Raju,India,kumar,India
-3,Li,China,swetha,China
-4,John,Canada,goonline,Canada
-5,Benjamin,Russia,snowflake,Russia
-6,India,Sairam,,
-7,venkat,USA,,
+PK,F_Name,L_Name_table1_df,State,Country_table1_df,L_Name_table2_df,Country_table2_df
+1,John,Mark,NY,USA,ravi,US
+2,Kolla,Raju,AP,India,kumar,India
+3,Box,Li,MA,USA,swetha,China
+4,Rambo,John,BC,Canada,goonline,Canada
+5,Netin,Benjamin,ON,Canada,snowflake,Russia
+6,Kumar,Arun,TG,India,,
+7,Narsima,venkat,CA,USA,,

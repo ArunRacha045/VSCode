@@ -34,10 +34,27 @@ df = pd.DataFrame(data)
 print(df)
 print(df.loc[0])
 print(df.loc[[0,2]])
+
 df = pd.DataFrame(data, index = ["day1", "day2", "day3"])
 print(df)
 print(df.loc["day2"])
 print(df.loc[["day2","day1"]])
+
+# ------------------------------------ Read DataFrame & Save into CSV ------------
+data = {
+    'NY': 'New York',
+    'AP': 'Andhra Pradesh',
+    'MA': 'Massachusetts',
+    'BC': 'British Columbia',
+    'ON': 'Ontario',
+    'TG': 'Telangana',
+    'CA': 'California'
+}
+
+df = pd.DataFrame(data.items(),columns=['state_Id','state_Name'])
+print(df)
+print('Table info ',df.info())
+df.to_csv(f'.\OutPut\state.csv', index=False)
 
 df = pd.read_csv('.\TestData\Data.csv')
 print(df)
@@ -120,11 +137,6 @@ df["Calories"].fillna(x, inplace = True)
 print(df) 
 
 print("-----------------------------------------------------------------------")
-# Convert wrong format date values to currect one
-df = pd.read_csv('.\TestData\Data_Duplicate_Null_wrong.csv')
-df['Date'] = pd.to_datetime(df['Date'])
-print(df.to_string())
-
 #Remove rows with a NULL value in the "Date" column
 df = pd.read_csv('.\TestData\Data_Duplicate_Null_wrong.csv')
 df.dropna(subset=['Date'], inplace = True)
@@ -132,11 +144,13 @@ print(df)
 
 print("-----------------------------------------------------------------------")
 # Set "Duration" column replace value to 45 for row 7
+print('Set "Duration" column replace value to 45 for row 7')
 df.loc[7, 'Duration'] = 45
 print(df)
 
 print("-----------------------------------------------------------------------")
 # Loop through all values in the "Duration" column. If the value is higher than 120, set it to 120
+print('-------- in the "Duration" column. If the value is higher than 120, set it to 120 -----')
 for x in df.index:
   if df.loc[x, "Duration"] > 120:
     df.loc[x, "Duration"] = 120
@@ -144,15 +158,150 @@ for x in df.index:
 
 print("-----------------------------------------------------------------------")
 # Delete rows where "Duration" is higher than 120
+print('----------Delete rows where "Duration" is higher than 120 ------')
 for x in df.index:
   if df.loc[x, "Duration"] > 120:
     df.drop(x, inplace = True)
 
 print("-----------------------------------------------------------------------")
 # Returns True for every row that is a duplicate, otherwise False
+print('Returns True for every row that is a duplicate, otherwise False')
 print(df.duplicated())
 
 print("-----------------------------------------------------------------------")
 # Remove all duplicates
 df.drop_duplicates(inplace = True)
 print(df)
+
+table1_df = pd.read_csv('.\TestData\emp.csv')
+table2_df = pd.read_csv('.\TestData\emp22.csv')
+print(table1_df.to_string())
+print("-------------------------------------------------------")
+print(table2_df.to_string())
+columns_to_compare = ['PK']
+# Inner Join
+fileName=""
+merged_inner_df = pd.merge(table1_df, table2_df, on=columns_to_compare, how='inner', suffixes=('_table1_df','_table2_df'))
+print("------------------- Inner Join ------------------",merged_inner_df)
+fileName="merged_inner_df"
+merged_inner_df.to_csv(f'.\OutPut\{fileName}.csv', index=False)
+
+# Outer Join
+merged_outer_df = pd.merge(table1_df, table2_df, on=columns_to_compare, how='outer', suffixes=('_table1_df','_table2_df'))
+print("------------------- Outer Join ------------------",merged_outer_df)
+fileName="merged_outer_df"
+merged_outer_df.to_csv(f'.\OutPut\{fileName}.csv', index=False)
+
+# Left Join
+merged_left_df = pd.merge(table1_df, table2_df, on=columns_to_compare, how='left', suffixes=('_table1_df','_table2_df'))
+print("------------------- Left Join ------------------",merged_left_df)
+fileName="merged_left_df"
+merged_left_df.to_csv(f'.\OutPut\{fileName}.csv', index=False)
+
+# Right Join
+merged_right_df = pd.merge(table1_df, table2_df, on=columns_to_compare, how='right', suffixes=('_table1_df','_table2_df'))
+print("------------------- Right Join ------------------",merged_right_df)
+fileName="merged_right_df"
+merged_right_df.to_csv(f'.\OutPut\{fileName}.csv', index=False)
+
+# Merge with specific columns
+Merge_Specific = pd.merge(table1_df,table2_df, on=columns_to_compare, how='inner')
+Merge_Specific["Full_Name"]=table1_df["F_Name"]+' '+table1_df['L_Name']
+fileName="Merge_Specific"
+print(Merge_Specific)
+Merge_Specific.to_csv(f'.\OutPut\{fileName}.csv', index=False)
+
+#-------  If NY change it to New York
+print('------------------- using dataFrame NY: New York' )
+state_mapping = {
+    'NY': 'New York',
+    'AP': 'Andhra Pradesh',
+    'MA': 'Massachusetts',
+    'BC': 'British Columbia',
+    'ON': 'Ontario',
+    'TG': 'Telangana',
+    'CA': 'California'
+}
+
+emp_Check= pd.read_csv('.\TestData\Emp_Check.csv')
+# Add new column 'State_FullName'
+emp_Check['State_FullName'] = emp_Check['State'].map(state_mapping)
+
+# Result
+print("----------------------------------",emp_Check)
+fileName="State_Full_Emp_Check"
+emp_Check.to_csv(f'.\OutPut\{fileName}.csv', index=False)
+emp_Check.to_html(f'.\OutPut\{fileName}.html', index=False)
+
+print('--------- State  full name from CSV --------')
+
+data1=pd.read_csv('.\TestData\state.csv')
+print(data1)
+
+data2=pd.read_csv('.\TestData\Emp_Check.csv')
+print(data2)
+
+# Create a mapping dictionary
+state_map=data1.set_index('state_Id')['state_Name'].to_dict()
+
+data2['Before_Map']=data2['State']
+
+# Replace State values with state_Name where matches exist
+data2['State']=data2['State'].map(state_map).fillna(data2['State'])
+
+print(data2)
+
+
+# runiing join with multi columns
+print('------------------------------- Join with multi columns where ')
+data1 = [('1','ABCD','NY'),
+         ('2','EFG','TX'),
+         ('3','HIJK','MA'),
+         ('4','LMNOP','CA'),
+         ]
+df1=pd.DataFrame(data1, columns=['Id','Name','City'])
+print(df1)
+
+data2 = [('1','QRS','NY'),
+         ('2','TUV','TX'),
+         ('3','WXYZ','MA'),
+         ('8','Good','CA')
+         ]
+df2=pd.DataFrame(data2, columns=['Row','Name','Town'])
+print(df2)
+
+data3=pd.merge(
+    df1,
+    df2,
+    left_on=['Id','City'],
+    right_on=['Row','Town'],
+    how='outer'
+)
+print(data3)
+
+#-------------- Map and Dictionay
+print('--------------------- Ex of Map and dictionary -------')
+emp=[
+    ('1','Mr','Raj'),
+    ('2','Miss','lusi'),
+    ('3','Mr','John'),
+    ('4','Miss','rose'),
+    ('5','MrMiss','Kal')
+]
+
+data1=pd.DataFrame(emp,columns=['Id','Dis','Name'])
+print(data1)
+
+missMr=[
+    ('Mr','Male'),
+    ('Miss','Female')
+]
+data2=pd.DataFrame(missMr,columns=['Dis','Gender'])
+print(data2)
+
+genderMap=data2.set_index('Dis')['Gender'].to_dict()
+data1['AfterDis']=data1['Dis'].map(genderMap).fillna('NA')
+
+data1['UpdatedName']=data1['Name'].str.upper()
+
+print(data1)
