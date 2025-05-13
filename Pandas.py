@@ -302,6 +302,13 @@ print(data2)
 genderMap=data2.set_index('Dis')['Gender'].to_dict()
 data1['AfterDis']=data1['Dis'].map(genderMap).fillna('NA')
 
+#---- convert to all CAP's
 data1['UpdatedName']=data1['Name'].str.upper()
+
+#---- verifying the nulls if null save 1 or 0
+data1['column_missing_WithNum'] = data1['AfterDis'].isnull().astype(int)
+
+#---- verifying the nulls if null save 1 or 0
+data1['column_missing_WithTorF'] = data1['AfterDis'].isnull()
 
 print(data1)

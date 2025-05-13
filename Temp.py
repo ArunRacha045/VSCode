@@ -23,3 +23,9 @@ print(numbers)
 #print(sorted(numbers))
 result = sorted(filter( lambda x : x%2==0, numbers))
 print(list(result))
+
+
+#----- desk.dataframe 
+#import dask.dataframe as dd
+#df = dd.read_csv('large_dataset.csv')
+
